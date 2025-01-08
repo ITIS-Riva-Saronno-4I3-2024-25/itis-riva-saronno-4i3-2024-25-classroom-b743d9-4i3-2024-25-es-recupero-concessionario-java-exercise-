@@ -5,19 +5,27 @@
  */
 package volpintesta.concessionaire;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author User
  */
 public class Concessionario
 {
+    private ArrayList<Veicolo> veicoli;
+    
+    private float saldo;
+    public float getSaldo() { return saldo; }
+    
     /**
      * Crea un concessionario con una lista vuota di veicoli e un saldo iniziale
      * di 0 euro.
      */
     public Concessionario()
     {
-        
+        veicoli = new ArrayList<Veicolo>();
+        saldo = 0;
     }
 
     /**

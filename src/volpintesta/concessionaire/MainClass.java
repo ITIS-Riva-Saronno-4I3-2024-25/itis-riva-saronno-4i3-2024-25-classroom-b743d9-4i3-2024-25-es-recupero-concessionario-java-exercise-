@@ -134,12 +134,11 @@ public class MainClass
     public static void mostraMenu()
     {
         System.out.println("--- MENU DEI COMANDI ---");
-        System.out.println("1 - Aggiungi auto (veicolo)");
-        System.out.println("2 - Aggiungi moto (veicolo)");
-        System.out.println("3 - Vendi veicolo");
-        System.out.println("4 - Cerca per marca");
-        System.out.println("5 - Cerca per anno");
-        System.out.println("6 - Cerca per targa");
+        System.out.println("1 - Aggiungi veicolo");
+        System.out.println("2 - Vendi veicolo");
+        System.out.println("3 - Cerca per marca");
+        System.out.println("4 - Cerca per anno");
+        System.out.println("5 - Cerca per targa");
         System.out.println("0 - esci");
         System.out.println("? - Menu dei comandi");
     }

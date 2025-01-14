@@ -11,6 +11,20 @@ package volpintesta.concessionaire;
  */
 public class Veicolo
 {
+    private String targa;    
+    private String modello;
+    private int annoProduzione;
+    
+    public String getTarga(){
+        return targa;
+    }
+    public String getModello(){
+        return modello;
+    }
+    public int getAnno(){
+        return annoProduzione;
+    }
+    
     /** Crea un nuovo veicolo con i valori specificati
      * @param targa la targa del veicolo
      * @param marca la marca (il nome della casa produttrice)
@@ -29,8 +43,10 @@ public class Veicolo
      * @param annoProduzione l'anno di produzione
      * @param prezzo il prezzo di vendita 
      */
-    /*public Veicolo (String targa, String nomeCompletoModello, int annoProduzione, float prezzo)
+    public Veicolo (String targa, String nomeCompletoModello, int annoProduzione)
     {
-
-    }*/
+        this.annoProduzione=annoProduzione;
+        this.targa=targa;
+        this.modello=nomeCompletoModello;
+    }
 }

@@ -21,7 +21,11 @@ public class MainClass
      */
     public static void main(String[] args)
     {
-        
+            Veicolo a=new Veicolo("FR 123 TR","AUDI A3",2017);
+            Veicolo b=new Veicolo("DF 567 AB","BMW X1",2022);
+            a.stampaVeicolo();
+            b.stampaVeicolo();
+
         /*
         Concessionario c = new Concessionario(); // crea un concessionario vuoto
         c.aggiungiVeicolo(new Veicolo("AA 111 AA", "BMW", "X1", 2020, 40000));

@@ -49,4 +49,7 @@ public class Veicolo
         this.targa=targa;
         this.modello=nomeCompletoModello;
     }
+    public void stampaVeicolo() {
+        System.out.println(targa+" "+modello+" "+annoProduzione);
+    }
 }

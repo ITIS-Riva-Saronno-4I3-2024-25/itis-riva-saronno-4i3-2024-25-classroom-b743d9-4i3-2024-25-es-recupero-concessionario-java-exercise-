@@ -11,6 +11,8 @@ package volpintesta.concessionaire;
  */
 public class Veicolo
 {
+    private final static int ANNO_CORRENTE = 2025;
+    
     private String targa;    
     private String modello;
     private int annoProduzione;
@@ -51,5 +53,8 @@ public class Veicolo
     }
     public void stampaVeicolo() {
         System.out.println(targa+" "+modello+" "+annoProduzione);
+    }
+    public int calcolaEtaVeicolo(){
+        return ANNO_CORRENTE-annoProduzione;
     }
 }

@@ -25,6 +25,7 @@ public class MainClass
             Veicolo b=new Veicolo("DF 567 AB","BMW X1",2022);
             a.stampaVeicolo();
             b.stampaVeicolo();
+            System.out.println(a.calcolaEtaVeicolo());
 
         /*
         Concessionario c = new Concessionario(); // crea un concessionario vuoto

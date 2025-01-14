@@ -18,10 +18,10 @@ public class Veicolo
      * @param annoProduzione l'anno di produzione
      * @param prezzo il prezzo di vendita
      */
-    public Veicolo (String targa, String marca, String modello, int annoProduzione, float prezzo)
+    /*public Veicolo (String targa, String marca, String modello, int annoProduzione, float prezzo)
     {
 
-    }
+    }*/
     
     /** Crea un nuovo veicolo con i valori specificati
      * @param targa la targa del veicolo
@@ -29,8 +29,8 @@ public class Veicolo
      * @param annoProduzione l'anno di produzione
      * @param prezzo il prezzo di vendita 
      */
-    public Veicolo (String targa, String nomeCompletoModello, int annoProduzione, float prezzo)
+    /*public Veicolo (String targa, String nomeCompletoModello, int annoProduzione, float prezzo)
     {
 
-    }
+    }*/
 }

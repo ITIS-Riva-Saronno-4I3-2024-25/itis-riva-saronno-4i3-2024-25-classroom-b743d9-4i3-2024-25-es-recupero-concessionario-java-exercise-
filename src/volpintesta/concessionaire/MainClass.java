@@ -21,6 +21,8 @@ public class MainClass
      */
     public static void main(String[] args)
     {
+        
+        /*
         Concessionario c = new Concessionario(); // crea un concessionario vuoto
         c.aggiungiVeicolo(new Veicolo("AA 111 AA", "BMW", "X1", 2020, 40000));
         c.aggiungiVeicolo(new Veicolo("BB 222 BB", "BMW", "X1", 2022, 50000));
@@ -129,6 +131,7 @@ public class MainClass
                     System.out.println("Scelta non valida.");
             }
         } while (continua);
+*/
     }
     
     public static void mostraMenu()

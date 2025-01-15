@@ -23,8 +23,8 @@ public class MainClass
     {
         Veicolo v1 = new Veicolo("EE 555 EE", "Lamborghini Urus", 2021, 245000);
         Veicolo v2 = new Veicolo("AA 111 AA", "BMW", "X1", 2020, 40000);
-        v1.stampaVeicolo();
-        v2.stampaVeicolo();
+        System.out.println(v1);
+        System.out.println(v2);
         
         Concessionario c = new Concessionario(); // crea un concessionario vuoto
         c.aggiungiVeicolo(new Veicolo("AA 111 AA", "BMW", "X1", 2020, 40000));

@@ -67,8 +67,9 @@ public class Veicolo
         this(targa, calcolaMarca(nomeCompletoModello), calcolaModello(nomeCompletoModello), annoProduzione, prezzo);
     }
     
-    public void stampaVeicolo() {
-        System.out.println(targa+": "+getNomeCompletoModello()+" del "+annoProduzione+" ("+calcolaEtaVeicolo()+" anni)");
+    @Override
+    public String toString() {
+        return targa+": "+getNomeCompletoModello()+" del "+annoProduzione+" ("+calcolaEtaVeicolo()+" anni)";
     }
     
     public int calcolaEtaVeicolo(){

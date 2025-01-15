@@ -5,13 +5,14 @@
  */
 package volpintesta.concessionaire;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author User
  */
 public class Veicolo
 {
-    private final static int ANNO_CORRENTE = 2025;
     public  final static String NOT_DEFINED_STRING = "%ND"; // Ok public perche' è costante
     
     private String targa;    
@@ -71,7 +72,7 @@ public class Veicolo
     }
     
     public int calcolaEtaVeicolo(){
-        return ANNO_CORRENTE-annoProduzione;
+        return LocalDate.now().getYear() - annoProduzione;
     }
     
     private static String calcolaMarca(String nomeCompletoModello)

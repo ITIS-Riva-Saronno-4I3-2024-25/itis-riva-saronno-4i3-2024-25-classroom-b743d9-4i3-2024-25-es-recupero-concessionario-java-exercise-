@@ -12,6 +12,7 @@ package volpintesta.concessionaire;
 public class Veicolo
 {
     private final static int ANNO_CORRENTE = 2025;
+    public  final static String NOT_DEFINED_STRING = "%ND"; // Ok public perche' è costante
     
     private String targa;    
     private String marca;
@@ -75,11 +76,16 @@ public class Veicolo
     
     private static String calcolaMarca(String nomeCompletoModello)
     {
-        return nomeCompletoModello;
+        String[] parti = nomeCompletoModello.split(" ");
+        return (parti.length > 0) ? parti[0] : NOT_DEFINED_STRING;
     }
     
     private static String calcolaModello(String nomeCompletoModello)
     {
-        return nomeCompletoModello;
+        String marca = calcolaMarca(nomeCompletoModello);
+        // marca.length() + 1 perche' si toglie anche il primo spazio separatore.
+        // Nota: in questo caso è corretto il controllo con != invece che con equals
+        // perche' la stringa restituita che indica errore è costante.
+        return (marca != NOT_DEFINED_STRING) ? nomeCompletoModello.substring(marca.length()+1) : NOT_DEFINED_STRING;
     }
 }

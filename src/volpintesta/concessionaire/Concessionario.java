@@ -41,6 +41,7 @@ public class Concessionario
         // che chi chiama i suoi metodi passi parametri validi. Dunque, se nel concessionario
         // non possono esserci veicoli null, per evitare di dover gestire casi limite inutili
         // che hanno il solo effetto di rendere più complesso il programma senza dare valore
+        // aggiunto, il responsabile dell'aggiunta di un riferimento null è il metodo che
         // permette l'aggiunta del veicolo. Se quindi il veicolo è null, semplicemente non sarà
         // aggiunto e il metodo terminerà immediatamente comunicando un risultato negativo.
         if (v == null)

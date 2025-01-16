@@ -11,7 +11,7 @@ import java.time.LocalDate;
  *
  * @author User
  */
-public class Veicolo
+public abstract class Veicolo
 {
     public  final static String NOT_DEFINED_STRING = "%ND"; // Ok public perche' è costante
     
@@ -39,6 +39,12 @@ public class Veicolo
     public float getPrezzo(){
         return prezzo;
     }
+    
+    /**
+     * Restituisce il numero di posti per cui l'auto è omologata.
+     * @return il numero di posti per cui l'auto è omologata.
+     */
+    public abstract int getNumeroPosti();
     
     /** Crea un nuovo veicolo con i valori specificati
      * @param targa la targa del veicolo
@@ -69,7 +75,8 @@ public class Veicolo
     
     @Override
     public String toString() {
-        return String.format("%s: %s del %d (%d anni), %.2f €", targa, getNomeCompletoModello(), annoProduzione, calcolaEtaVeicolo(), prezzo);
+        return String.format("%s: %s del %d (%d anni), %.2f €, omologata per %d",
+                targa, getNomeCompletoModello(), annoProduzione, calcolaEtaVeicolo(), prezzo, getNumeroPosti());
     }
     
     public int calcolaEtaVeicolo(){

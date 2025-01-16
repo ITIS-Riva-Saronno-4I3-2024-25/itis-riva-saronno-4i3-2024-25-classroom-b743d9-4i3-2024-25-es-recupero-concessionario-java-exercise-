@@ -38,8 +38,6 @@ public class MainClass
         {
             String targa = "";
             String marca = "";
-            String modello = "";
-            int anno = 0;
             int annoMin = 0;
             int annoMax = 0;
             float prezzo = 0;
@@ -53,20 +51,8 @@ public class MainClass
             switch (input.nextLine())
             {
                 case "1":                    
-                    System.out.println("Inserimento di un nuovo veicolo");
-                    System.out.print(" >>> Targa: ");
-                    targa = input.nextLine();
-                    System.out.print(" >>> Marca: ");
-                    marca = input.nextLine();
-                    System.out.print(" >>> Modello: ");
-                    modello = input.nextLine();                    
-                    System.out.print(" >>> Anno di produzione: ");
-                    anno = Integer.parseInt(input.nextLine());                                        
-                    System.out.print(" >>> Prezzo (€): ");
-                    prezzo = Float.parseFloat(input.nextLine());
-                    
-                    veicolo = new Veicolo(targa, marca, modello, anno, prezzo);                    
-                    successo = c.aggiungiVeicolo(veicolo);
+                    veicolo = creaVeicolo();                    
+                    successo = (veicolo != null) ? c.aggiungiVeicolo(veicolo) : false;
                     if (successo)
                         System.out.println("Veicolo aggiunto con successo!");
                     else
@@ -151,5 +137,59 @@ public class MainClass
         System.out.println("5 - Cerca per targa");
         System.out.println("0 - esci");
         System.out.println("? - Menu dei comandi");
+    }
+    
+    /**
+     * Crea un veicolo gestendo input e output. Se il parametro è true crea un'auto, sennò una moto
+     * @param auto se true, crea un auto, sennò una moto
+     * @return il veicolo creato, null se ci sono stati errori di input.
+     */
+    private static Veicolo creaVeicolo()
+    {
+        System.out.println("Inserimento di un nuovo veicolo");
+       
+        String targa = "";
+        String marca = "";
+        String modello = "";
+        int anno = 0;
+        float prezzo = 0f;
+        int numeroPosti = 0;
+        float dimensioneBagagliaio = 0f;
+        
+        System.out.print(" >>> Tipo [1 = auto, 2 = moto]: ");
+        int tipo = Integer.parseInt(input.nextLine());
+        
+        if (tipo == 1 || tipo == 2)
+        {
+            System.out.print(" >>> Targa: ");
+            targa = input.nextLine();
+            System.out.print(" >>> Marca: ");
+            marca = input.nextLine();
+            System.out.print(" >>> Modello: ");
+            modello = input.nextLine();                    
+            System.out.print(" >>> Anno di produzione: ");
+            anno = Integer.parseInt(input.nextLine());                                        
+            System.out.print(" >>> Prezzo (€): ");
+            prezzo = Float.parseFloat(input.nextLine());
+            
+            if (tipo == 1)
+            {
+                System.out.print(" >>> Omologata per (numero di posti): ");
+                numeroPosti = Integer.parseInt(input.nextLine());                                        
+                System.out.print(" >>> Dimensione bagagliaio (litri): ");
+                dimensioneBagagliaio = Float.parseFloat(input.nextLine());
+                return new Auto(targa, marca, modello, anno, prezzo, numeroPosti, dimensioneBagagliaio);
+            }
+            else if (tipo == 2)
+            {
+                return new Moto(targa, marca, modello, anno, prezzo);
+            }
+        }
+        else
+        {
+            System.out.print("Tipo di veicolo non valido!");
+        }
+        
+        return null;
     }
 }

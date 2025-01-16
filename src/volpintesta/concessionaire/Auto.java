@@ -16,6 +16,7 @@ public class Auto extends Veicolo
      * Restituisce il numero di posti per cui l'auto è omologata.
      * @return il numero di posti per cui l'auto è omologata.
      */
+    @Override
     public int getNumeroPosti() { return numeroPosti; }
     
     private float dimensioneBagagliaio;
@@ -60,6 +61,6 @@ public class Auto extends Veicolo
     
     @Override
     public String toString() {
-        return String.format("%s, omologata per %d, bagagliaio di %.0f litri", super.toString(), numeroPosti, dimensioneBagagliaio);
+        return String.format("%s, bagagliaio di %.0f litri", super.toString(), dimensioneBagagliaio);
     }    
 }

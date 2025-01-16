@@ -90,10 +90,7 @@ public class MainClass
                     System.out.print(" >>> Marca: ");
                     marca = input.nextLine();
                     veicoli = c.cercaPerMarca(marca);
-                    System.out.println("Risultati:");
-                    for (Veicolo v : veicoli)
-                        if (v != null)
-                            System.out.println(v);
+                    stampaRisultato(veicoli);
                     break;
                     
                 case "4":
@@ -103,10 +100,7 @@ public class MainClass
                     System.out.print(" >>> all'anno: ");
                     annoMax = Integer.parseInt(input.nextLine());
                     veicoli = c.cercaPerAnno(annoMin, annoMax);
-                    System.out.println("Risultati:");
-                    for (Veicolo v : veicoli)
-                        if (v != null)
-                            System.out.println(v);
+                    stampaRisultato(veicoli);
                     break;
                     
                 case "5":
@@ -132,6 +126,19 @@ public class MainClass
                     System.out.println("Scelta non valida.");
             }
         } while (continua);
+    }
+    
+    private static void stampaRisultato (Veicolo[] veicoli)
+    {
+        if (veicoli.length == 0)
+            System.out.println("Nessun veicolo trovato.");
+        else
+        {
+            System.out.println("Veicoli trovati:");
+            for (Veicolo v : veicoli)
+            if (v != null)
+                System.out.println(v);
+        }
     }
     
     public static void mostraMenu()

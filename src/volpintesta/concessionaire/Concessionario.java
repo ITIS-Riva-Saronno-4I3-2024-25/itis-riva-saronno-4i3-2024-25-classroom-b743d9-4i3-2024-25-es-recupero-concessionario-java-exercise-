@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Concessionario
 {
     private ArrayList<Veicolo> veicoli;
+    public Veicolo[] getVeicoli() { return veicoli.toArray(new Veicolo[0]); }
     
     private float saldo;
     public float getSaldo() { return saldo; }
@@ -158,16 +159,26 @@ public class Concessionario
      */
     public Veicolo[] cercaPerMarca (String marca)
     {
-        Veicolo[] risultato = new Veicolo[veicoli.size()]; // nel dubbio bisogna allocare un array di risultati della dimensione massima possibile
+        // Inizialmente bisogna allocare un array di risultati della dimensione massima possibile
+        Veicolo[] temp = new Veicolo[veicoli.size()];
         int risultatiTrovati = 0;
         for (Veicolo v : veicoli)
         {
             if (v != null && v.getMarca().equals(marca)) // NOTA: non c'è nessun controllo in aggiunta del veicolo sul null, quindi non è detto che non ci siano elementi null in lista.
             {
-                risultato[risultatiTrovati++] = v; // usa il numero di risultati trovati come indice di inserimento, poi lo incrementa per passare al prossimo
+                temp[risultatiTrovati++] = v; // usa il numero di risultati trovati come indice di inserimento, poi lo incrementa per passare al prossimo
                 // Non c'è break ma si va avanti con le iterazioni perché, potendoci essere più di un veicolo con la stessa marca, bisogna iterare l'intera lista.
             }
         }
+        
+        // Adesso, conoscendo quanti sono gli elementi, è possibile allocare un array della
+        // dimensione corretta e travasare gli elementi.
+        Veicolo[] risultato = new Veicolo[risultatiTrovati];
+        // Ogni volta che bisogna lavorare con gli indici, ovviamente non è possibile
+        // usare il foreach, ma è obbligatorio tornare all'utilizzo del for normale.
+        for (int i = 0; i < risultatiTrovati; i++)
+            risultato[i] = temp[i];
+        
         return risultato;
     }
     
@@ -182,16 +193,15 @@ public class Concessionario
      */
     public Veicolo[] cercaPerAnno (int annoMin, int annoMax)
     {
-        Veicolo[] risultato = new Veicolo[veicoli.size()]; // nel dubbio bisogna allocare un array di risultati della dimensione massima possibile
-        int risultatiTrovati = 0;
+        ArrayList<Veicolo> risultato = new ArrayList<Veicolo>();
         for (Veicolo v : veicoli)
         {
             if (v != null && v.getAnno() >= annoMin && v.getAnno() <= annoMax) // NOTA: non c'è nessun controllo in aggiunta del veicolo sul null, quindi non è detto che non ci siano elementi null in lista.
             {
-                risultato[risultatiTrovati++] = v; // usa il numero di risultati trovati come indice di inserimento, poi lo incrementa per passare al prossimo
+                risultato.add(v);
                 // Non c'è break ma si va avanti con le iterazioni perché, potendoci essere più di un veicolo con la stessa marca, bisogna iterare l'intera lista.
             }
         }
-        return risultato;
+        return risultato.toArray(new Veicolo[0]);
     }
 }

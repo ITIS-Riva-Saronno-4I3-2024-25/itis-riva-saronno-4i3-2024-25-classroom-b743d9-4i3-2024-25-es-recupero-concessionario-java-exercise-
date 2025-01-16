@@ -27,8 +27,8 @@ public class MainClass
         c.aggiungiVeicolo(new Auto("CC 333 CC", "BMW", "X3", 2023, 70000, 4, 570));
         c.aggiungiVeicolo(new Auto("DD 444 DD", "Ferrari", "F40", 1987, 3000000, 2, 35));
         c.aggiungiVeicolo(new Auto("EE 555 EE", "Lamborghini Urus", 2021, 245000, 5, 616));
-        System.out.println("Catalogo concessionario:");
-        c.stampaCatalogo();     
+        c.aggiungiVeicolo(new Moto("FF 666 FF", "Ducati", "Panigale V4", 2024, 34000));
+        c.aggiungiVeicolo(new Moto("GG 777 GG", "Kawasaki Ninja 650", 2022, 8000));
         
         System.out.println("----------------------");
         mostraMenu();
@@ -50,7 +50,12 @@ public class MainClass
                        
             switch (input.nextLine())
             {
-                case "1":                    
+                case "1":
+                    System.out.println("Catalogo concessionario:");
+                    c.stampaCatalogo();
+                    break;
+                    
+                case "2":                    
                     veicolo = creaVeicolo();                    
                     successo = (veicolo != null) ? c.aggiungiVeicolo(veicolo) : false;
                     if (successo)
@@ -60,7 +65,7 @@ public class MainClass
                     
                     break;
                     
-                case "2":
+                case "3":
                     System.out.println("Vendita di un veicolo");
                     System.out.print(" >>> Targa: ");
                     targa = input.nextLine();
@@ -71,7 +76,7 @@ public class MainClass
                         System.out.println("Non è stato trovato nessun veicolo con la targa richiesta.");
                     break;
                     
-                case "3":
+                case "4":
                     System.out.println("Ricerca per marca");
                     System.out.print(" >>> Marca: ");
                     marca = input.nextLine();
@@ -79,7 +84,7 @@ public class MainClass
                     stampaRisultato(veicoli);
                     break;
                     
-                case "4":
+                case "5":
                     System.out.println("Ricerca per anno tra due date");
                     System.out.print(" >>> dall'anno: ");
                     annoMin = Integer.parseInt(input.nextLine());
@@ -89,7 +94,7 @@ public class MainClass
                     stampaRisultato(veicoli);
                     break;
                     
-                case "5":
+                case "6":
                     System.out.println("Ricerca per targa");
                     System.out.print(" >>> Targa: ");
                     targa = input.nextLine();
@@ -127,14 +132,15 @@ public class MainClass
         }
     }
     
-    public static void mostraMenu()
+    private static void mostraMenu()
     {
         System.out.println("--- MENU DEI COMANDI ---");
-        System.out.println("1 - Aggiungi veicolo");
-        System.out.println("2 - Vendi veicolo");
-        System.out.println("3 - Cerca per marca");
-        System.out.println("4 - Cerca per anno");
-        System.out.println("5 - Cerca per targa");
+        System.out.println("1 - Stampa catalogo");
+        System.out.println("2 - Aggiungi veicolo");
+        System.out.println("3 - Vendi veicolo");
+        System.out.println("4 - Cerca per marca");
+        System.out.println("5 - Cerca per anno");
+        System.out.println("6 - Cerca per targa");
         System.out.println("0 - esci");
         System.out.println("? - Menu dei comandi");
     }

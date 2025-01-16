@@ -40,6 +40,8 @@ public abstract class Veicolo
         return prezzo;
     }
     
+    protected abstract String getTipoPerStampa();
+    
     /**
      * Restituisce il numero di posti per cui l'auto è omologata.
      * @return il numero di posti per cui l'auto è omologata.
@@ -75,8 +77,8 @@ public abstract class Veicolo
     
     @Override
     public String toString() {
-        return String.format("%s: %s del %d (%d anni), %.2f €, omologata per %d",
-                targa, getNomeCompletoModello(), annoProduzione, calcolaEtaVeicolo(), prezzo, getNumeroPosti());
+        return String.format("%s: %s, %s del %d (%d anni), %.2f €, omologata per %d",
+                targa, getTipoPerStampa(), getNomeCompletoModello(), annoProduzione, calcolaEtaVeicolo(), prezzo, getNumeroPosti());
     }
     
     public int calcolaEtaVeicolo(){

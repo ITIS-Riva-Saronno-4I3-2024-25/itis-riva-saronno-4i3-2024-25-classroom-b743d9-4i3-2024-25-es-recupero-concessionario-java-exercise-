@@ -11,6 +11,9 @@ package volpintesta.concessionaire;
  */
 public class Auto extends Veicolo
 {
+    @Override
+    protected String getTipoPerStampa() { return "auto"; }
+    
     private int numeroPosti;
     /**
      * Restituisce il numero di posti per cui l'auto è omologata.

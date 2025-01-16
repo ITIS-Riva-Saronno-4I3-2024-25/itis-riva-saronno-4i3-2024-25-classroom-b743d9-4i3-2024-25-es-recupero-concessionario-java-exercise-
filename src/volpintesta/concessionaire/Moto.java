@@ -17,7 +17,10 @@ public class Moto extends Veicolo
         // E' sempre omologata per 2, quindi non serve un attributo,
         // ma va bene restituire sempre lo stesso valore.
         return 2;
-    } 
+    }
+    
+    @Override
+    protected String getTipoPerStampa() { return "moto"; }
 
     /**
      * Crea una moto con i valori specificati

@@ -95,6 +95,7 @@ public class MainClass
                     System.out.print(" >>> Marca: ");
                     marca = input.nextLine();
                     veicoli = c.cercaPerMarca(marca);
+                    System.out.println("Risultati:");
                     for (Veicolo v : veicoli)
                         if (v != null)
                             System.out.println(v);
@@ -106,7 +107,8 @@ public class MainClass
                     annoMin = Integer.parseInt(input.nextLine());
                     System.out.print(" >>> all'anno: ");
                     annoMax = Integer.parseInt(input.nextLine());
-                    veicoli = c.cercaPerMarca(marca);
+                    veicoli = c.cercaPerAnno(annoMin, annoMax);
+                    System.out.println("Risultati:");
                     for (Veicolo v : veicoli)
                         if (v != null)
                             System.out.println(v);

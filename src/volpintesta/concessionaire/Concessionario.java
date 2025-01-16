@@ -124,7 +124,17 @@ public class Concessionario
      */
     public Veicolo[] cercaPerMarca (String marca)
     {
-        return new Veicolo[]{};
+        Veicolo[] risultato = new Veicolo[veicoli.size()]; // nel dubbio bisogna allocare un array di risultati della dimensione massima possibile
+        int risultatiTrovati = 0;
+        for (Veicolo v : veicoli)
+        {
+            if (v != null && v.getMarca().equals(marca)) // NOTA: non c'è nessun controllo in aggiunta del veicolo sul null, quindi non è detto che non ci siano elementi null in lista.
+            {
+                risultato[risultatiTrovati++] = v; // usa il numero di risultati trovati come indice di inserimento, poi lo incrementa per passare al prossimo
+                // Non c'è break ma si va avanti con le iterazioni perché, potendoci essere più di un veicolo con la stessa marca, bisogna iterare l'intera lista.
+            }
+        }
+        return risultato;
     }
     
     /**
@@ -138,6 +148,16 @@ public class Concessionario
      */
     public Veicolo[] cercaPerAnno (int annoMin, int annoMax)
     {
-        return new Veicolo[]{};
+        Veicolo[] risultato = new Veicolo[veicoli.size()]; // nel dubbio bisogna allocare un array di risultati della dimensione massima possibile
+        int risultatiTrovati = 0;
+        for (Veicolo v : veicoli)
+        {
+            if (v != null && v.getAnno() >= annoMin && v.getAnno() <= annoMax) // NOTA: non c'è nessun controllo in aggiunta del veicolo sul null, quindi non è detto che non ci siano elementi null in lista.
+            {
+                risultato[risultatiTrovati++] = v; // usa il numero di risultati trovati come indice di inserimento, poi lo incrementa per passare al prossimo
+                // Non c'è break ma si va avanti con le iterazioni perché, potendoci essere più di un veicolo con la stessa marca, bisogna iterare l'intera lista.
+            }
+        }
+        return risultato;
     }
 }

@@ -151,20 +151,23 @@ public class Concessionario
     }
     
     /**
-     * Restituisce l'array contenente i veicoli con la marca specificata.
+     * Restituisce l'array contenente i veicoli di un certo tipo con la marca specificata.
      * L'array restituito non avrà elementi a null, quindi sarà esattamente della
      * dimensione richiesta.
      * @param marca la marca da cercare
-     * @return un array contenente i veicoli con la marca specificata
+     * @param tipoVeicolo il tipo di veicoli. Se TipoVeicolo.NESSUNO, il filtro viene ignorato
+     * @return un array contenente i veicoli di un certo tipo con la marca specificata
      */
-    public Veicolo[] cercaPerMarca (String marca)
+    public Veicolo[] cercaPerMarca (String marca, TipoVeicolo tipoVeicolo)
     {
         // Inizialmente bisogna allocare un array di risultati della dimensione massima possibile
         Veicolo[] temp = new Veicolo[veicoli.size()];
         int risultatiTrovati = 0;
         for (Veicolo v : veicoli)
         {
-            if (v != null && v.getMarca().equals(marca)) // NOTA: non c'è nessun controllo in aggiunta del veicolo sul null, quindi non è detto che non ci siano elementi null in lista.
+            if (v != null
+                    && v.getMarca().equals(marca)
+                    && (tipoVeicolo == TipoVeicolo.NESSUNO || tipoVeicolo == v.getTipoVeicolo()))
             {
                 temp[risultatiTrovati++] = v; // usa il numero di risultati trovati come indice di inserimento, poi lo incrementa per passare al prossimo
                 // Non c'è break ma si va avanti con le iterazioni perché, potendoci essere più di un veicolo con la stessa marca, bisogna iterare l'intera lista.
@@ -181,7 +184,43 @@ public class Concessionario
         
         return risultato;
     }
+    /**
+     * Restituisce l'array contenente i veicoli con la marca specificata.
+     * L'array restituito non avrà elementi a null, quindi sarà esattamente della
+     * dimensione richiesta.
+     * @param marca la marca da cercare
+     * @return un array contenente i veicoli con la marca specificata
+     */
+    public Veicolo[] cercaPerMarca (String marca)
+    {
+        return cercaPerMarca(marca, TipoVeicolo.NESSUNO);
+    }
     
+    /**
+     * Restituisce l'array contenente i veicoli prodotti in un anno compreso tra gli
+     * estremi specificati e facenti parte di un certo tipo.
+     * L'array restituito non avrà elementi a null, quindi sarà esattamente della
+     * dimensione richiesta.
+     * @param annoMin l'estremo inferiore dell'intervallo della ricerca (inclusivo)
+     * @param annoMax l'estremo superiore dell'intervallo della ricerca (inclusivo)
+     * @param tipoVeicolo il tipo di veicoli. Se TipoVeicolo.NESSUNO, il filtro viene ignorato
+     * @return un array contenente i veicoli di un certo tipo prodotti in un anno compreso tra gli estremi specificati
+     */
+    public Veicolo[] cercaPerAnno (int annoMin, int annoMax, TipoVeicolo tipoVeicolo)
+    {
+        ArrayList<Veicolo> risultato = new ArrayList<Veicolo>();
+        for (Veicolo v : veicoli)
+        {
+            if (v != null
+                    && v.getAnno() >= annoMin && v.getAnno() <= annoMax
+                    && (tipoVeicolo == TipoVeicolo.NESSUNO || tipoVeicolo == v.getTipoVeicolo()))
+            {
+                risultato.add(v);
+                // Non c'è break ma si va avanti con le iterazioni perché, potendoci essere più di un veicolo con la stessa marca, bisogna iterare l'intera lista.
+            }
+        }
+        return risultato.toArray(new Veicolo[0]);
+    }
     /**
      * Restituisce l'array contenente i veicoli prodotti in un anno compreso tra gli
      * estremi specificati.
@@ -193,15 +232,6 @@ public class Concessionario
      */
     public Veicolo[] cercaPerAnno (int annoMin, int annoMax)
     {
-        ArrayList<Veicolo> risultato = new ArrayList<Veicolo>();
-        for (Veicolo v : veicoli)
-        {
-            if (v != null && v.getAnno() >= annoMin && v.getAnno() <= annoMax) // NOTA: non c'è nessun controllo in aggiunta del veicolo sul null, quindi non è detto che non ci siano elementi null in lista.
-            {
-                risultato.add(v);
-                // Non c'è break ma si va avanti con le iterazioni perché, potendoci essere più di un veicolo con la stessa marca, bisogna iterare l'intera lista.
-            }
-        }
-        return risultato.toArray(new Veicolo[0]);
+        return cercaPerAnno(annoMin, annoMax, TipoVeicolo.NESSUNO);
     }
 }

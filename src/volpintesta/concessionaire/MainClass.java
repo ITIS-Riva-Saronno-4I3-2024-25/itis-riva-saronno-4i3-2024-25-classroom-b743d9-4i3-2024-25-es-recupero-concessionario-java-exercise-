@@ -5,6 +5,7 @@
  */
 package volpintesta.concessionaire;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -41,6 +42,7 @@ public class MainClass
             int annoMin = 0;
             int annoMax = 0;
             float prezzo = 0;
+            TipoVeicolo tipoVeicolo = TipoVeicolo.NESSUNO;
             Veicolo veicolo = null;
             boolean successo = false;
             Veicolo[] veicoli = new Veicolo[]{};
@@ -80,7 +82,9 @@ public class MainClass
                     System.out.println("Ricerca per marca");
                     System.out.print(" >>> Marca: ");
                     marca = input.nextLine();
-                    veicoli = c.cercaPerMarca(marca);
+                    System.out.print(" >>> Filtra per [auto, moto, altro = non filtrare]: ");
+                    tipoVeicolo = inputTipoVeicolo();
+                    veicoli = (tipoVeicolo != TipoVeicolo.NESSUNO) ? c.cercaPerMarca(marca, tipoVeicolo) : c.cercaPerMarca(marca);
                     stampaRisultato(veicoli);
                     break;
                     
@@ -90,7 +94,9 @@ public class MainClass
                     annoMin = Integer.parseInt(input.nextLine());
                     System.out.print(" >>> all'anno: ");
                     annoMax = Integer.parseInt(input.nextLine());
-                    veicoli = c.cercaPerAnno(annoMin, annoMax);
+                    System.out.print(" >>> Filtra per [auto, moto, altro = non filtrare]: ");
+                    tipoVeicolo = inputTipoVeicolo();
+                    veicoli = (tipoVeicolo != TipoVeicolo.NESSUNO) ? c.cercaPerAnno(annoMin, annoMax, tipoVeicolo) : c.cercaPerAnno(annoMin, annoMax);
                     stampaRisultato(veicoli);
                     break;
                     
@@ -130,6 +136,15 @@ public class MainClass
             if (v != null)
                 System.out.println(v);
         }
+    }
+    
+    private static TipoVeicolo inputTipoVeicolo()
+    {
+        String nomeDaCercare = input.nextLine().trim().toUpperCase(); // rimuove gli spazi iniziali e finali e converte in maiuscolo
+        for (TipoVeicolo t : TipoVeicolo.values()) // itera tutti i valori della enum
+            if (t != TipoVeicolo.NESSUNO && t.name().toUpperCase().equals(nomeDaCercare))
+                return t; // se trova il tipo lo restituisce
+        return TipoVeicolo.NESSUNO;
     }
     
     private static void mostraMenu()

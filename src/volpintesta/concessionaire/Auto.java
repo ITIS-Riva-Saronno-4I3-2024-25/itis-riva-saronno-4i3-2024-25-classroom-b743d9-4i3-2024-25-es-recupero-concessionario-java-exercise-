@@ -12,7 +12,7 @@ package volpintesta.concessionaire;
 public class Auto extends Veicolo
 {
     @Override
-    protected String getTipoPerStampa() { return "auto"; }
+    public TipoVeicolo getTipoVeicolo() { return TipoVeicolo.AUTO; }
     
     private int numeroPosti;
     /**

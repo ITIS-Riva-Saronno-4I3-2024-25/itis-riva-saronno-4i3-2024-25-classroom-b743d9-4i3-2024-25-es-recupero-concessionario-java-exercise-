@@ -20,7 +20,7 @@ public class Moto extends Veicolo
     }
     
     @Override
-    protected String getTipoPerStampa() { return "moto"; }
+    public TipoVeicolo getTipoVeicolo() { return TipoVeicolo.MOTO; }
 
     /**
      * Crea una moto con i valori specificati

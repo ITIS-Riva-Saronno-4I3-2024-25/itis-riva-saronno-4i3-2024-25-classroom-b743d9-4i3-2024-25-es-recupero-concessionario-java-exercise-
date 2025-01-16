@@ -70,7 +70,8 @@ public class MainClass
                     prezzo = Float.parseFloat(input.nextLine());
                     
                     veicolo = new Veicolo(targa, marca, modello, anno, prezzo);                    
-                    successo = c.aggiungiVeicolo(veicolo);
+                    //successo = c.aggiungiVeicolo(veicolo);
+                    successo = true;
                     if (successo)
                         System.out.println("Veicolo aggiunto con successo!");
                     else
@@ -84,7 +85,7 @@ public class MainClass
                     targa = input.nextLine();
                     successo = c.vendiVeicolo(targa);
                     if (successo)
-                        System.out.println("Veicolo venduto con successo!");
+                        System.out.println("Veicolo venduto con successo! Saldo corrente: " + c.getSaldo() + " €");
                     else
                         System.out.println("Non è stato trovato nessun veicolo con la targa richiesta.");
                     break;

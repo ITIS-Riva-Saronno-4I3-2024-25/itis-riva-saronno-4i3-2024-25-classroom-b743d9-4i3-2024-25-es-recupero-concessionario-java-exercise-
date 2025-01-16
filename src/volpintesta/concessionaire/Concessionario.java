@@ -35,9 +35,9 @@ public class Concessionario
      * @param v il veicolo da aggiungere
      * @return true se il veicolo è stato aggiunto, false altrimenti
      */
-    public boolean aggiungiVeicolo(Veicolo v)
+    public void aggiungiVeicolo(Veicolo v)
     {
-        return false;
+        veicoli.add(v);
     }
     
     /**
@@ -58,6 +58,49 @@ public class Concessionario
      */
     public boolean vendiVeicolo (String targa)
     {
+        // Inizializzo ad un riferimento non valido. Se non viene trovato nessun
+        // veicolo con la targa passata come parametro, il valore non sarà mai
+        // modificato, e il metodo venderà niente.
+        // La variabile dichiarata fuori dal ciclo fa si che, se invece il veicolo
+        // viene trovato, il suo riferimento possa essere scritto su una variabile
+        // che sopravviva all'uscita dal ciclo. In questo caso il riferimento
+        // al veicolo trovato all'interno del ciclo sarà poi usato per la vendita.
+        Veicolo veicoloDaVendere = null; 
+        for (Veicolo v : veicoli) // itero tutti i veicoli (questo è un foreach)
+        {
+            // NOTA: Le stringhe vanno sempre controllate con equals, perché
+            // non esistono quasi mai casi in cui serva controllare l'uguaglianza
+            // superficiale, ma va quasi sempre controllata l'uguaglianza profonda,
+            // a meno di casi minori e particolari che mettono sempre in gioco
+            // stringhe costanti (quindi scritte in codice e non lette tramite
+            // un canale di input).
+            // Vedi: "Uguagliaza superficiale e profonda"
+            // Vedi: "equals e == "
+            if (v.getTarga().equals(v.getTarga()))
+            {
+                veicoloDaVendere = v;
+                break; 
+            }
+        }
+        
+        // Se veicoloDaVendere ha un valore non null, vuol dire che è stato
+        // trovato un veicolo con la targa passata come parametro.
+        if (veicoloDaVendere != null)
+        {
+            // Rimuovo il veicolo (nota che lo rimuovo dalla lista, ma il riferimento
+            // resta dentro a veicoloDaVendere fino a che la funzione non termina)
+            veicoli.remove(veicoloDaVendere);
+            
+            // aggiungo il prezzo del veicolo venduto al saldo del concessionario
+            saldo += veicoloDaVendere.getPrezzo();
+            
+            // restituisco un risultato positivo che indica l'avvenuta vendita
+            return true;
+        }
+        
+        // Se il metodo non ha terminato la sua esecuzione (restituendo quindi un
+        // risultato positivo) vuol dire che non è stato trovato un veicolo con la
+        // data passata come parametro, quindi non può essere effettuata alcuna vendita.
         return false;
     }
     

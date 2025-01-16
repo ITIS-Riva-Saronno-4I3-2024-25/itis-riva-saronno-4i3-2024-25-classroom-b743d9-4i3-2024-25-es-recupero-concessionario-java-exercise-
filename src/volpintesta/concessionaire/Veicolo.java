@@ -69,7 +69,7 @@ public class Veicolo
     
     @Override
     public String toString() {
-        return targa+": "+getNomeCompletoModello()+" del "+annoProduzione+" ("+calcolaEtaVeicolo()+" anni)";
+        return String.format("%s: %s del %d (%d anni), %.2f €", targa, getNomeCompletoModello(), annoProduzione, calcolaEtaVeicolo(), prezzo);
     }
     
     public int calcolaEtaVeicolo(){

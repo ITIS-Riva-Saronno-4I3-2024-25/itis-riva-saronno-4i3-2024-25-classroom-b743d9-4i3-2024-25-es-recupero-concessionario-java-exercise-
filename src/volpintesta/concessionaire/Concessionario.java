@@ -35,9 +35,34 @@ public class Concessionario
      * @param v il veicolo da aggiungere
      * @return true se il veicolo è stato aggiunto, false altrimenti
      */
-    public void aggiungiVeicolo(Veicolo v)
+    public boolean aggiungiVeicolo(Veicolo v)
     {
-        veicoli.add(v);
+        // Una classe non può basare la consistenza dei suoi dati interni sulla fiducia
+        // che chi chiama i suoi metodi passi parametri validi. Dunque, se nel concessionario
+        // non possono esserci veicoli null, per evitare di dover gestire casi limite inutili
+        // che hanno il solo effetto di rendere più complesso il programma senza dare valore
+        // permette l'aggiunta del veicolo. Se quindi il veicolo è null, semplicemente non sarà
+        // aggiunto e il metodo terminerà immediatamente comunicando un risultato negativo.
+        if (v == null)
+            return false;
+        
+        // Prima va verificato che non esista un veicolo con la stessa targa,
+        // quindi ne cerco uno, e se non esiste (viene restituito null)
+        // posso andare avanti aggiungendo il veicolo passato come parametro
+        // e posso terminare il metodo restituendo un risultato positivo.
+        // NOTA: non c'è variabile per il risultato di cercaVeicolo perché
+        // dopo il controllo il riferimento non serve più.
+        if (cercaVeicolo(v.getTarga()) == null) 
+        {
+            veicoli.add(v);
+            return true;
+        }
+        
+        // Se il metodo sta ancora eseguendo, vuol dire che il programma
+        // non è entrato nell'if precedente (altrimenti sarebbe terminato restituendo true).
+        // Quindi un veicolo con la stessa marca era stato effettivamente trovato
+        // e l'aggiunta del veicolo non è avvenuta, dunque va restituito un risultato negativo.
+        return false;
     }
     
     /**
@@ -60,30 +85,12 @@ public class Concessionario
      */
     public boolean vendiVeicolo (String targa)
     {
-        // Inizializzo ad un riferimento non valido. Se non viene trovato nessun
-        // veicolo con la targa passata come parametro, il valore non sarà mai
-        // modificato, e il metodo venderà niente.
-        // La variabile dichiarata fuori dal ciclo fa si che, se invece il veicolo
-        // viene trovato, il suo riferimento possa essere scritto su una variabile
-        // che sopravviva all'uscita dal ciclo. In questo caso il riferimento
-        // al veicolo trovato all'interno del ciclo sarà poi usato per la vendita.
-        Veicolo veicoloDaVendere = null; 
-        for (Veicolo v : veicoli) // itero tutti i veicoli (questo è un foreach)
-        {
-            // NOTA: Le stringhe vanno sempre controllate con equals, perché
-            // non esistono quasi mai casi in cui serva controllare l'uguaglianza
-            // superficiale, ma va quasi sempre controllata l'uguaglianza profonda,
-            // a meno di casi minori e particolari che mettono sempre in gioco
-            // stringhe costanti (quindi scritte in codice e non lette tramite
-            // un canale di input).
-            // Vedi: "Uguagliaza superficiale e profonda"
-            // Vedi: "equals e == "
-            if (v.getTarga().equals(v.getTarga()))
-            {
-                veicoloDaVendere = v;
-                break; 
-            }
-        }
+        // Cerco il veicolo da vendere. A differenza dell'aggiunta del veicolo,
+        // dove il veicolo cercato non serviva a niente se non a verificare
+        // che fosse stato restituito null, in questo caso con il veicolo va
+        // effettivamente fatto qualcosa, quindi il riferimento va scritto in una
+        // variabile.
+        Veicolo veicoloDaVendere = cercaVeicolo(targa);
         
         // Se veicoloDaVendere ha un valore non null, vuol dire che è stato
         // trovato un veicolo con la targa passata come parametro.
@@ -114,7 +121,31 @@ public class Concessionario
      */
     public Veicolo cercaVeicolo (String targa)
     {
-        return null;
+        // Inizializzo ad un riferimento non valido. Se non viene trovato nessun
+        // veicolo con la targa passata come parametro, il valore non sarà mai
+        // modificato, e il metodo restituirà quindi null.
+        // La variabile dichiarata fuori dal ciclo fa si che, se invece il veicolo
+        // viene trovato, il suo riferimento possa essere scritto su una variabile
+        // che sopravviva all'uscita dal ciclo. In questo caso il valore restituito
+        // dal metodo sarà il riferimento al veicolo trovato all'interno del ciclo.
+        Veicolo veicoloTrovato = null; 
+        for (Veicolo v : veicoli) // itero tutti i veicoli (questo è un foreach)
+        {
+            // NOTA: Le stringhe vanno sempre controllate con equals, perché
+            // non esistono quasi mai casi in cui serva controllare l'uguaglianza
+            // superficiale, ma va quasi sempre controllata l'uguaglianza profonda,
+            // a meno di casi minori e particolari che mettono sempre in gioco
+            // stringhe costanti (quindi scritte in codice e non lette tramite
+            // un canale di input).
+            // Vedi: "Uguagliaza superficiale e profonda"
+            // Vedi: "equals e == "
+            if (v.getTarga().equals(targa))
+            {
+                veicoloTrovato = v;
+                break; 
+            }
+        }
+        return veicoloTrovato;
     }
     
     /**

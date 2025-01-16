@@ -66,8 +66,7 @@ public class MainClass
                     prezzo = Float.parseFloat(input.nextLine());
                     
                     veicolo = new Veicolo(targa, marca, modello, anno, prezzo);                    
-                    //successo = c.aggiungiVeicolo(veicolo);
-                    successo = true;
+                    successo = c.aggiungiVeicolo(veicolo);
                     if (successo)
                         System.out.println("Veicolo aggiunto con successo!");
                     else

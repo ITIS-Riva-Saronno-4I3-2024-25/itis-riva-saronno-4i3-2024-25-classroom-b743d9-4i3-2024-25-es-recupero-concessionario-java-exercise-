@@ -42,6 +42,7 @@ public class MainClass
             int annoMin = 0;
             int annoMax = 0;
             float prezzo = 0;
+            float dimensioneBagagliaio = 0;
             TipoVeicolo tipoVeicolo = TipoVeicolo.NESSUNO;
             Veicolo veicolo = null;
             boolean successo = false;
@@ -111,6 +112,14 @@ public class MainClass
                         System.out.println("Veicolo non trovato!");
                     break;
                     
+                case "7":
+                    System.out.println("Ricerca auto per capienza minima del bagagliaio");
+                    System.out.print(" >>> Capienza minima (litri): ");
+                    dimensioneBagagliaio = Float.parseFloat(input.nextLine());
+                    veicoli = c.cercaAutoPerCapienzaBagagliaio(dimensioneBagagliaio);
+                    stampaRisultato(veicoli);
+                    break;
+                    
                 case "0":
                     continua = false;
                     break;
@@ -156,6 +165,7 @@ public class MainClass
         System.out.println("4 - Cerca per marca");
         System.out.println("5 - Cerca per anno");
         System.out.println("6 - Cerca per targa");
+        System.out.println("7 - Cerca auto per capienza minima del bagagliaio");
         System.out.println("0 - esci");
         System.out.println("? - Menu dei comandi");
     }

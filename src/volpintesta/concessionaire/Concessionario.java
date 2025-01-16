@@ -234,4 +234,24 @@ public class Concessionario
     {
         return cercaPerAnno(annoMin, annoMax, TipoVeicolo.NESSUNO);
     }
+    
+    /**
+     * Restituisce l'array contenente le auto con un bagagliaio di capienza minima specificata
+     * @param capienzaMinimaBagagliaio la capienza minima del bagagliaio in litri
+     * @return un array contenente le auto con un bagagliaio di capienza minima specificata.
+     */
+    public Auto[] cercaAutoPerCapienzaBagagliaio (float capienzaMinimaBagagliaio)
+    {
+        ArrayList<Auto> risultato = new ArrayList<Auto>();
+        for (Veicolo v : veicoli)
+        {
+            if (v != null && v instanceof Auto)
+            {
+                Auto a = (Auto)v;
+                if (a.getDimensioneBagagliaio() >= capienzaMinimaBagagliaio)
+                    risultato.add(a);
+            }
+        }
+        return risultato.toArray(new Auto[0]);
+    }
 }

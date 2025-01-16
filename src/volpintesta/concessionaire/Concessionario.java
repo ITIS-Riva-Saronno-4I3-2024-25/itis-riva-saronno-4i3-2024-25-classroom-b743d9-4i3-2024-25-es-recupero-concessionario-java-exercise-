@@ -45,7 +45,9 @@ public class Concessionario
      */
     public void stampaCatalogo()
     {
-        
+        for (Veicolo v : veicoli)
+            if (v != null)
+                System.out.println(v);
     }
     
     /**

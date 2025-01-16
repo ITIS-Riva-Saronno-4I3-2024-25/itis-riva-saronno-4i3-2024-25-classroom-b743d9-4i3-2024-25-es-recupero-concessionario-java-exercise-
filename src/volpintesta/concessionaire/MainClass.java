@@ -21,17 +21,13 @@ public class MainClass
      */
     public static void main(String[] args)
     {
-        Veicolo v1 = new Veicolo("EE 555 EE", "Lamborghini Urus", 2021, 245000);
-        Veicolo v2 = new Veicolo("AA 111 AA", "BMW", "X1", 2020, 40000);
-        System.out.println(v1);
-        System.out.println(v2);
-        
         Concessionario c = new Concessionario(); // crea un concessionario vuoto
         c.aggiungiVeicolo(new Veicolo("AA 111 AA", "BMW", "X1", 2020, 40000));
         c.aggiungiVeicolo(new Veicolo("BB 222 BB", "BMW", "X1", 2022, 50000));
         c.aggiungiVeicolo(new Veicolo("CC 333 CC", "BMW", "X3", 2023, 70000));
         c.aggiungiVeicolo(new Veicolo("DD 444 DD", "Ferrari", "F40", 1985, 3000000));
         c.aggiungiVeicolo(new Veicolo("EE 555 EE", "Lamborghini Urus", 2021, 245000));
+        System.out.println("Catalogo concessionario:");
         c.stampaCatalogo();     
         
         System.out.println("----------------------");

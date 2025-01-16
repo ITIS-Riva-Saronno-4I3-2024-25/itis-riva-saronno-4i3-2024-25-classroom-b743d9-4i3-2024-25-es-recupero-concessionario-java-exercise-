@@ -22,11 +22,11 @@ public class MainClass
     public static void main(String[] args)
     {
         Concessionario c = new Concessionario(); // crea un concessionario vuoto
-        c.aggiungiVeicolo(new Veicolo("AA 111 AA", "BMW", "X1", 2020, 40000));
-        c.aggiungiVeicolo(new Veicolo("BB 222 BB", "BMW", "X1", 2022, 50000));
-        c.aggiungiVeicolo(new Veicolo("CC 333 CC", "BMW", "X3", 2023, 70000));
-        c.aggiungiVeicolo(new Veicolo("DD 444 DD", "Ferrari", "F40", 1985, 3000000));
-        c.aggiungiVeicolo(new Veicolo("EE 555 EE", "Lamborghini Urus", 2021, 245000));
+        c.aggiungiVeicolo(new Auto("AA 111 AA", "BMW", "X1", 2020, 40000, 4, 540));
+        c.aggiungiVeicolo(new Auto("BB 222 BB", "BMW", "X1", 2022, 50000, 5, 540));
+        c.aggiungiVeicolo(new Auto("CC 333 CC", "BMW", "X3", 2023, 70000, 4, 570));
+        c.aggiungiVeicolo(new Auto("DD 444 DD", "Ferrari", "F40", 1987, 3000000, 2, 35));
+        c.aggiungiVeicolo(new Auto("EE 555 EE", "Lamborghini Urus", 2021, 245000, 5, 616));
         System.out.println("Catalogo concessionario:");
         c.stampaCatalogo();     
         

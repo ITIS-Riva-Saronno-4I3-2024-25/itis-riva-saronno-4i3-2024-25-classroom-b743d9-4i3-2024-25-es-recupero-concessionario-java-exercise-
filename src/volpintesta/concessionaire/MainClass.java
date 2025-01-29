@@ -177,15 +177,22 @@ public class MainClass
                     break;
                     
                 case "5":
-                    System.out.println("Ricerca per anno tra due date");
-                    System.out.print(" >>> dall'anno: ");
-                    annoMin = Integer.parseInt(input.nextLine());
-                    System.out.print(" >>> all'anno: ");
-                    annoMax = Integer.parseInt(input.nextLine());
-                    System.out.print(" >>> Filtra per [auto, moto, altro = non filtrare]: ");
-                    tipoVeicolo = inputTipoVeicolo();
-                    veicoli = (tipoVeicolo != TipoVeicolo.NESSUNO) ? c.cercaPerAnno(annoMin, annoMax, tipoVeicolo) : c.cercaPerAnno(annoMin, annoMax);
-                    stampaRisultato(veicoli);
+                    try
+                    {
+                        System.out.println("Ricerca per anno tra due date");
+                        System.out.print(" >>> dall'anno: ");
+                        annoMin = Integer.parseInt(input.nextLine());
+                        System.out.print(" >>> all'anno: ");
+                        annoMax = Integer.parseInt(input.nextLine());
+                        System.out.print(" >>> Filtra per [auto, moto, altro = non filtrare]: ");
+                        tipoVeicolo = inputTipoVeicolo();
+                        veicoli = (tipoVeicolo != TipoVeicolo.NESSUNO) ? c.cercaPerAnno(annoMin, annoMax, tipoVeicolo) : c.cercaPerAnno(annoMin, annoMax);
+                        stampaRisultato(veicoli);
+                    }
+                    catch (NumberFormatException e) // eccezione lanciata da Integer.parseInt
+                    {
+                        System.out.println("Errore di input: inserire un numero intero.");
+                    }
                     break;
                     
                 case "6":
@@ -200,11 +207,18 @@ public class MainClass
                     break;
                     
                 case "7":
-                    System.out.println("Ricerca auto per capienza minima del bagagliaio");
-                    System.out.print(" >>> Capienza minima (litri): ");
-                    dimensioneBagagliaio = Float.parseFloat(input.nextLine());
-                    veicoli = c.cercaAutoPerCapienzaBagagliaio(dimensioneBagagliaio);
-                    stampaRisultato(veicoli);
+                    try
+                    {
+                        System.out.println("Ricerca auto per capienza minima del bagagliaio");
+                        System.out.print(" >>> Capienza minima (litri): ");
+                        dimensioneBagagliaio = Float.parseFloat(input.nextLine());
+                        veicoli = c.cercaAutoPerCapienzaBagagliaio(dimensioneBagagliaio);
+                        stampaRisultato(veicoli);
+                    }
+                    catch (NumberFormatException e) // eccezione lanciata da Integer.parseInt
+                    {
+                        System.out.println("Errore di input: inserire un numero decimale.");
+                    }
                     break;
                     
                 case "0":
@@ -275,37 +289,44 @@ public class MainClass
         float dimensioneBagagliaio = 0f;
         
         System.out.print(" >>> Tipo [1 = auto, 2 = moto]: ");
-        int tipo = Integer.parseInt(input.nextLine());
-        
-        if (tipo == 1 || tipo == 2)
+        try
         {
-            System.out.print(" >>> Targa: ");
-            targa = input.nextLine();
-            System.out.print(" >>> Marca: ");
-            marca = input.nextLine();
-            System.out.print(" >>> Modello: ");
-            modello = input.nextLine();                    
-            System.out.print(" >>> Anno di produzione: ");
-            anno = Integer.parseInt(input.nextLine());                                        
-            System.out.print(" >>> Prezzo (€): ");
-            prezzo = Float.parseFloat(input.nextLine());
-            
-            if (tipo == 1)
+            int tipo = Integer.parseInt(input.nextLine());
+
+            if (tipo == 1 || tipo == 2)
             {
-                System.out.print(" >>> Omologata per (numero di posti): ");
-                numeroPosti = Integer.parseInt(input.nextLine());                                        
-                System.out.print(" >>> Dimensione bagagliaio (litri): ");
-                dimensioneBagagliaio = Float.parseFloat(input.nextLine());
-                return new Auto(targa, marca, modello, anno, prezzo, numeroPosti, dimensioneBagagliaio);
+                System.out.print(" >>> Targa: ");
+                targa = input.nextLine();
+                System.out.print(" >>> Marca: ");
+                marca = input.nextLine();
+                System.out.print(" >>> Modello: ");
+                modello = input.nextLine();                    
+                System.out.print(" >>> Anno di produzione: ");
+                anno = Integer.parseInt(input.nextLine());                                        
+                System.out.print(" >>> Prezzo (€): ");
+                prezzo = Float.parseFloat(input.nextLine());
+
+                if (tipo == 1)
+                {
+                    System.out.print(" >>> Omologata per (numero di posti): ");
+                    numeroPosti = Integer.parseInt(input.nextLine());                                        
+                    System.out.print(" >>> Dimensione bagagliaio (litri): ");
+                    dimensioneBagagliaio = Float.parseFloat(input.nextLine());
+                    return new Auto(targa, marca, modello, anno, prezzo, numeroPosti, dimensioneBagagliaio);
+                }
+                else if (tipo == 2)
+                {
+                    return new Moto(targa, marca, modello, anno, prezzo);
+                }
             }
-            else if (tipo == 2)
+            else
             {
-                return new Moto(targa, marca, modello, anno, prezzo);
+                System.out.print("Tipo di veicolo non valido!");
             }
         }
-        else
+        catch (NumberFormatException e) // eccezione lanciata da Integer.parseInt
         {
-            System.out.print("Tipo di veicolo non valido!");
+            System.out.println("Errore di input: inserire un valore numerico.");
         }
         
         return null;

@@ -122,6 +122,16 @@ public class MainClass
                                 // quindi l'aggiunta del veicolo è riuscita.
                                 // Dunque, mostro in output un messaggio di successo.
                                 System.out.println("Veicolo aggiunto con successo!");
+                                
+                                try
+                                {
+                                    c.salvaDati(filePath);
+                                }
+                                catch (IOException e)
+                                {
+                                    System.out.println("Il salvataggio delle modifiche sul file \""+filePath+"\" è fallito.");
+                                }
+
                             }
                             catch(VeicoloDuplicatoException e) // eccezione lanciata dal metodo aggiungiVeicolo
                             {
@@ -189,7 +199,17 @@ public class MainClass
                         targa = input.nextLine();
                         successo = c.vendiVeicolo(targa);
                         if (successo)
+                        {
                             System.out.println("Veicolo venduto con successo! Saldo corrente: " + c.getSaldo() + " €");
+                            try
+                            {
+                                c.salvaDati(filePath);
+                            }
+                            catch (IOException e)
+                            {
+                                System.out.println("Il salvataggio delle modifiche sul file \""+filePath+"\" è fallito.");
+                            }
+                        }
                         else
                             System.out.println("Non è stato trovato nessun veicolo con la targa richiesta.");
                         break;

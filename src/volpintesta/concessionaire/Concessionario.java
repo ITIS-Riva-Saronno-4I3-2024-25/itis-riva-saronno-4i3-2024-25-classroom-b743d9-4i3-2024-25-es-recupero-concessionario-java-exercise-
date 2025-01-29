@@ -6,12 +6,15 @@
 package volpintesta.concessionaire;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**
@@ -647,6 +650,163 @@ public class Concessionario
             // In ogni caso, l'unica cosa che si può fare in questo caso è lasciare l'eccezione
             // non gestita, lasciando che se ne occupi qualcun altro, e sperando che non succeda mai.
             
+        }
+    }
+    
+    /**
+     * Scrive i dati in un file su disco
+     * @param filepath il path del file (vedi la classe java.io.File per dettagli)
+     * @throws IOException se il file non può essere creato, sovrascritto oppure se si verificano errori di I/O in scrittura.
+     */
+    public void salvaDati(String filepath) throws IOException
+    {
+        // Gestisco subito un errore che lancerebbe eccezione più tardi.
+        if (filepath == null)
+            throw new NullPointerException("Il filepath è null.");
+        
+        // Creo un riferimento al file
+        File file = new File (filepath);
+        
+        // Se il file esiste, lo elimino in modo da poter creare più avanti quello nuovo
+        // con i dati aggiornati
+        // NOTA: l'implementazione attuale non è bellissima, perché richiede i permessi in cancellazione (delete)
+        // per implementare la sovrascrittura di un file. Basterebbe aprire semplicemente il file in scrittura
+        // per sovrascriverne il contenuto, cosa che richiederebbe semplicemente i permessi in scrittura, e non anche
+        // in cancellazione. A scopo dimostrativo, però, qui sta venendo mostrato anche il delete.
+        if (file.exists())
+        {
+            // Lancia SecurityException se i permessi sul file impediscono l'accesso in scrittura;
+            boolean deleted = file.delete();
+            if (!deleted)
+            {
+                throw new IOException("Esiste già un file con nome \""+filepath+"\" e quindi non è possibile sovrascriverlo.");
+            }
+        }
+        
+        // Creo il file su cui scrivere i dati
+        
+        // Lancia IOException se si verificano errori di I/O durante la creazione del nuovo file.
+        // Lancia SecurityException se i permessi sul file impediscono l'accesso in scrittura
+        // necessario alla creazione del file.
+        boolean created = file.createNewFile();
+        if (!created)
+        {
+            throw new IOException("Non è possibile creare il file \""+filepath+"\".");
+        }
+        
+        // OutputStream è uno stream di byte aperto in scrittura. Permette la scrittura di N byte.
+        // Come InputStream, è una classe astratta e implementa la gestione logica dello stream,
+        // lasciando alle sottoclassi i dettagli implementativi sulla vera e propria scrittura dei
+        // byte sul dispositivo di destinazione.
+        // Tutti gli OutputStream, per ragioni di ottimizzazione delle scritture e per problematiche
+        // legate alla gestione degli stream da parte delle librerie del Java o del sistema operativo,
+        // che dipendono da tempistiche e ragioni delle quali non abbiamo il controllo,
+        // potrebbe capitare che scritture rimangano "pendenti".
+        // A fine scrittura, quindi, bisogna sempre ricordarsi di chiamare il metodo flush, che forza la scrittura
+        // dei dati da parte dei sistema operativo sul dispositivo di destinazione, oppure il metodo
+        // close, chiama il flush automaticamente prima dellachiusura effettiva chiusura dello stream.
+        
+        // FileOutputStream è uno stream aperto in scrittura su un file, quindi implementa i dettagli
+        // della scrittura di byte su un file su disco.
+        // Ci sono 2 modalità di scrittura:
+        // - WRITE, che permette di scrivere un file dall'inizio (sovrascrivendone il contenuto), che è la
+        // modalità di default di apertura
+        // - APPEND, impostabile tramite un overload del costruttore, che permette di scrivere un file
+        // continuando dalla fine.
+        // Il costruttore di FileOutputStream può lanciare:
+        // FileNotFoundException: il file non esiste
+        // SecurityException: se i permessi sul file ne impediscono l'accesso in scrittura.
+        // Attenzione: una mancata chiusura dello stream e quindi un mancato richiamo della flush finale
+        // possono determinare, nel caso di file, la corruzione di un file, che, rimasto aperto e senza
+        // i dati necessari a rappresentare la fine del file, non può più essere letto.
+        
+        // PrintWriter è la stessa classe del riferimento allo standard output contenuto in System.out
+        // e implementa la scrittura di dati condificati in varie maniere su OutputStream.
+        // Comprende sia le codifiche numeriche che quelle testuali, sia per singoli caratteri e array
+        // di caratteri, che per stringhe.
+        // Per semplicità, dal momento che si è abiutati con System.out, può essere utilizzata questa
+        // classe.
+        // Attenzione: in generale, però, sarebbe bene, per essere sicuri che lettura e scrittura usino
+        // le stesse codifiche e lavorino in maniera analoga, usare sempre classi "speculari", come
+        // BufferedReader e BufferedWriter.
+        //Inoltre, PrintWriter presenta un forte problema: come Scanner per l'input, anche PrintWriter per
+        // l'output non richiede di catturare le IOException lanciate dai metodi di scrittura. Questo vuol
+        // dire che l'eccezione lanciata dal FileInputStream interno, viene racchiusa in una RuntimeException
+        // per essere lanciata anche se l'intestazione del metodo non la dichiara. Questo vuol dire che
+        // PrintWriter non è adeguato alla scrittura di dati su stream che facilmente possono dare errori,
+        // come file e stream di rete.
+        
+        // OutputStreamWriter implementa la codifica testuale dei byte, quindi permette di passare dalla
+        // scrittura di caratteri alla scrittura di byte (lo stream puro trasmette sempre byte non codificati).
+        // Permette quindi la scrittura di singoli caratteri, array di caratteri e porzioni di stringhe, senza
+        // gestire l'invio dei terminatori di stringa e di linea.
+        
+        // BufferedWriter implementa la bufferizzazione interna di caratteri per la costruzione di stringhe
+        // da inviare poi in una volta. Inoltre permette di inviare stringhe e righe aggiungendo automaticamente
+        // il corretto terminatore alla fine, in maniera speculare a un BufferedReader.
+        
+        // Costrutto "try-catch with resources"
+        // E' possibile dichiarare tra parentesi tonde, accanto al try, separati da punto e virgola come
+        // istruzioni separate, una serie di riferimenti a classi che implementano l'interfaccia
+        // AutoCloseable perché implementano risorse di sistema. Il costrutto "try-catch with resources"
+        // richiama automaticamente il metodo close di tutti i riferimenti dichiarati tra le parentesi
+        // tonde. Anche se la chiamata del close non viene fatta esplicitamente dal programmatore, l'eccezione
+        // IOException che viene lanciata implicitamente dalla clausola try deve essere o catturata o rilanciata,
+        // come al solito.
+        // Siccome la close è automaticamente chiamata, inoltre, non è necessario scrivere apposta una clausola
+        // finally, a meno che non si debba fare anche altro a parte la chiusura degli stream e la liberazione
+        // delle risorse. Inoltre, questo evita anche l'insorgere di problemi come quello del metodo di lettura
+        // dei datai da file, in cui nel metodo close ci siamo dovuti preoccupare dell'ordine di rilascio delle
+        // risorse e di quali avessero riferimenti validi e quali no.
+        // Questa comodita, però, ha come costo il fatto che, oltre dover gestire una IOException lanciata implicitamente,
+        // nell'implementazione di AutoCloseable non si garantisce (a differenza di quanto richiesto per le
+        // implementazioni di Closeable) che chiamate di close su stream già chiusi e risorse già rilasciate
+        // non lascino alcuna traccia nei dati interni. E' dunque fortemente consigliato, se si usa questo
+        // costrutto, non chiamare mai la close esplicitamente.
+        // In generale, comunque, si suggerisce l'uso del try-with-resources quando possibile.
+                
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file))))
+        {
+            //Scrivo il saldo iniziale
+            bufferedWriter.write(TOKEN_SALDO_INIZIALE + SEPARATORE_NOME_VALORE + " " + saldo);
+            bufferedWriter.newLine();
+            
+            // Scrivo tutti i veicoli facendo attenzione che il formato in scrittura sia allineato a quello in lettura
+            for (Veicolo v : veicoli)
+            {
+                if (v != null)
+                {
+                    String rigaVeicolo = TOKEN_TIPO + SEPARATORE_NOME_VALORE + " " + v.getTipoVeicolo().toString().toLowerCase();
+                    rigaVeicolo += " " + SEPARATORE_ATTRIBUTI + " " + TOKEN_TARGA + SEPARATORE_NOME_VALORE + " " + v.getTarga();
+                    rigaVeicolo += " " + SEPARATORE_ATTRIBUTI + " " + TOKEN_MARCA + SEPARATORE_NOME_VALORE + " " + v.getMarca();
+                    rigaVeicolo += " " + SEPARATORE_ATTRIBUTI + " " + TOKEN_MODELLO + SEPARATORE_NOME_VALORE + " " + v.getModello();
+                    rigaVeicolo += " " + SEPARATORE_ATTRIBUTI + " " + TOKEN_ANNO + SEPARATORE_NOME_VALORE + " " + v.getAnno();
+                    rigaVeicolo += " " + SEPARATORE_ATTRIBUTI + " " + TOKEN_PREZZO + SEPARATORE_NOME_VALORE + " " + v.getPrezzo();
+                    if (v instanceof Auto)
+                    {
+                        Auto a = (Auto)v;
+                        rigaVeicolo += " " + SEPARATORE_ATTRIBUTI + " " + TOKEN_POSTI + SEPARATORE_NOME_VALORE + " " + v.getNumeroPosti();
+                        rigaVeicolo += " " + SEPARATORE_ATTRIBUTI + " " + TOKEN_BAGAGLIAIO + SEPARATORE_NOME_VALORE + " " + a.getDimensioneBagagliaio();
+                    }
+                    bufferedWriter.write(rigaVeicolo);
+                    bufferedWriter.newLine();
+                }
+            }
+            
+            // Forzo la scrittura su disco di eventuali dati rimasti bufferizzati nelle librerie e non ancora mandati sul file.
+            bufferedWriter.flush();
+            
+            // non chiudo lo stream perché, uscendo dal try-with-resources, ci penseranno le librerie Java
+        }
+        catch (FileNotFoundException e)
+        {
+            // Non dovrebbe mai capitare, siccome il file è stato precedentemente creato nuovo e siccome il fallimento nella
+            // creazione determina il lancio di una IOException, che non si riesca poi ad aprire il file. Non c'è, quindi,
+            // una logica risolutiva che plausibilmente chi chiama questa funzione potrebbe implementare.
+            // Decidiamo quindi, per non richiedere di gestire questa eccezione, ma per non zittirla completamente e permettere
+            // al programma di crashare con errore, di wrapparla in una RuntimeException.
+            throw new RuntimeException("La funzione ha creato correttamente il file nuovo, ma poi non riesce a trovarlo più quando lo deve aprire. "
+                    + "Questo è un errore molto strano che non dovrebbe essere possibile che si verifichi mai.", e);
         }
     }
 }

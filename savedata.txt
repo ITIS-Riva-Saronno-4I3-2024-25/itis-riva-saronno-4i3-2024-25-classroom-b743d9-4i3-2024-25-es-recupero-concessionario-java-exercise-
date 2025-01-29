@@ -1,0 +1,8 @@
+saldo_iniziale: 0
+tipo: auto ; targa: AA 111 AA ; marca: BMW ; modello: X1 ; anno: 2020 ; prezzo: 40000 ; posti: 4 ; bagagliaio: 540
+tipo: auto ; targa: BB 222 BB ; marca: BMW ; modello: X1 ; anno: 2022 ; prezzo: 50000 ; posti: 5 ; bagagliaio: 540
+tipo: auto ; targa: CC 333 CC ; marca: BMW ; modello: X3 ; anno: 2023 ; prezzo: 70000 ; posti: 4 ; bagagliaio: 570
+tipo: auto ; targa: DD 444 DD ; marca: Ferrari ; modello: F40 ; anno: 1987 ; prezzo: 3000000 ; posti: 2 ; bagagliaio: 35
+tipo: auto ; targa: EE 555 EE ; marca: Lamborghini ; modello: Urus ; anno: 2021 ; prezzo: 245000 ; posti: 5 ; bagagliaio: 616
+tipo: moto ; targa: FF 666 FF ; marca: Ducati ; modello: Panigale V4 ; anno: 2024 ; prezzo: 34000
+tipo: moto ; targa: GG 777 GG ; marca: Kawasaki ; modello: Ninja 650 ; anno: 2022 ; prezzo: 8000

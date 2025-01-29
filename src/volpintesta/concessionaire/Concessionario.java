@@ -30,13 +30,29 @@ public class Concessionario
     }
 
     /**
+     * Verifica l'esistenza di un veicolo con una determinata targa.
+     * @param targa la targa del veicolo
+     * @return true se esiste un veicolo con la targa specificata, false altrimenti.
+     */
+    public boolean esisteVeicolo(String targa)
+    {
+        return cercaVeicolo(targa) != null;
+    }
+    
+    /**
      * Aggiunge un veicolo al concessionario verificando che non esistano veicoli
      * con la stessa targa. Nel caso esista già un veicolo con la stessa targa,
-     * il veicolo non verrà aggiunto e verrà restituito false.
+     * il veicolo non verrà aggiunto e lanciata un'eccezione.
+     * NOTA: questa implementazione con l'eccezione è a scopo didattico, per dimostrare
+     * l'uso delle eccezioni, ma non è ottimale. Sarebbe meglio implementare semplicemente
+     * un valore di ritorno booleano, come nella versione precedente, perché questa
+     * implementazione obbliga chi chiama il metodo a catturare un'eccezione, e non è
+     * quindi un modo comodo di gestire un caso di errore comune.
      * @param v il veicolo da aggiungere
-     * @return true se il veicolo è stato aggiunto, false altrimenti
+     * @throws volpintesta.concessionaire.VeicoloDuplicatoException se il veicolo ha una targa
+     * uguale ad un altro veicolo già presente in concessionario.
      */
-    public boolean aggiungiVeicolo(Veicolo v)
+    public void aggiungiVeicolo(Veicolo v) throws VeicoloDuplicatoException
     {
         // Una classe non può basare la consistenza dei suoi dati interni sulla fiducia
         // che chi chiama i suoi metodi passi parametri validi. Dunque, se nel concessionario
@@ -44,27 +60,40 @@ public class Concessionario
         // che hanno il solo effetto di rendere più complesso il programma senza dare valore
         // aggiunto, il responsabile dell'aggiunta di un riferimento null è il metodo che
         // permette l'aggiunta del veicolo. Se quindi il veicolo è null, semplicemente non sarà
-        // aggiunto e il metodo terminerà immediatamente comunicando un risultato negativo.
-        if (v == null)
-            return false;
-        
-        // Prima va verificato che non esista un veicolo con la stessa targa,
-        // quindi ne cerco uno, e se non esiste (viene restituito null)
-        // posso andare avanti aggiungendo il veicolo passato come parametro
-        // e posso terminare il metodo restituendo un risultato positivo.
-        // NOTA: non c'è variabile per il risultato di cercaVeicolo perché
-        // dopo il controllo il riferimento non serve più.
-        if (cercaVeicolo(v.getTarga()) == null) 
+        // aggiunto e il metodo terminerà senza fare altro.
+        if (v != null)
         {
-            veicoli.add(v);
-            return true;
+            // Prima va verificato che non esista un veicolo con la stessa targa,
+            // quindi ne cerco uno, e se non esiste (viene restituito null)
+            // posso andare avanti aggiungendo il veicolo passato come parametro.
+            // NOTA: non c'è variabile per il risultato di cercaVeicolo perché
+            // dopo il controllo il riferimento non serve più.
+            if (cercaVeicolo(v.getTarga()) == null) 
+            {
+                veicoli.add(v);
+            }
+            else
+            {
+                // Se invece un veicolo con la stessa marca era stato effettivamente trovato
+                // e l'aggiunta del veicolo non è avvenuta, il metodo lancia un'eccezione.
+                
+                // Quando viene lanciata l'eccezione il metodo termina anticipatamente la sua esecuzione e,
+                // uno alla volta tutti i blocchi di codice termineranno anticipatamente la loro
+                // esecuzione.
+                // Le funzioni che terminano non restituiscono alcun valore, cosa che impedisce la
+                // normale prosecuzione del codice. Funzioni che possono terminare anticipatamente
+                // la loro esecuzione a causa di eccezioni devono dichiararlo nell'intestazione usando
+                // la clausola throws.
+                // Quando il blocco che termina è un blocco try, però, prima di forzare la terminazione
+                // del blocco in cui è contenuto si controlla se esiste una clausola catch che catturi
+                // un'eccezione di tipo compatibile con l'eccezione lanciata.
+                // In caso affermativo, l'esecuzione del programma riprenderà dall'interno del blocco
+                // catch, e l'eccezione catturata sarà disponibile tramite un riferimento per leggerne
+                // eventuali dati.                
+                
+                throw new VeicoloDuplicatoException("Impossibile aggiungere il veicolo perché è già presente un veicolo con targa '"+v.getTarga()+"'");
+            }
         }
-        
-        // Se il metodo sta ancora eseguendo, vuol dire che il programma
-        // non è entrato nell'if precedente (altrimenti sarebbe terminato restituendo true).
-        // Quindi un veicolo con la stessa marca era stato effettivamente trovato
-        // e l'aggiunta del veicolo non è avvenuta, dunque va restituito un risultato negativo.
-        return false;
     }
     
     /**

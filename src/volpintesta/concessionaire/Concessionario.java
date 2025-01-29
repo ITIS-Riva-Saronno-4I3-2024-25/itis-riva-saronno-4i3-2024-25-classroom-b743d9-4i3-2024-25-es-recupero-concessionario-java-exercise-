@@ -41,6 +41,11 @@ public class Concessionario
     private float saldo;
     public float getSaldo() { return saldo; }
     
+    private boolean autoSalvataggio = true;
+    public boolean autoSalvataggioAttivo() { return autoSalvataggio; }
+    public void attivaAutoSalvataggio(boolean attivo) { autoSalvataggio = attivo; }    
+    private String filePath = null;
+    
     /**
      * Crea un concessionario con una lista vuota di veicoli e un saldo iniziale
      * di 0 euro.
@@ -56,6 +61,7 @@ public class Concessionario
      * Per i dettagli sul corretto formato del path, leggere la documentazione delle API
      * della classe java.io.File.
      * @param filepath il path del file
+     * @param autosalvataggio se true, i medoti di modifica salvano i dati su file
      * @throws FileNotFoundException se il file non esiste
      * @throws IOException se durante l'esecuzione del metodo si verificano errori di I/O durante le operazioni di lettura del file
      * @throws FileParsingException se la lettura del file fallisce non per errori di I/O ma di formato dei dati
@@ -63,11 +69,15 @@ public class Concessionario
      * @throws NullPointerException se il filepath passato come parametro è null
      * @throws SecurityException se il file può essere aperto per ragioni legate ai permessi sui file (vedi i costruttori di FileInputStream)
      */
-    public Concessionario (String filepath)
+    public Concessionario (String filepath, boolean autosalvataggio)
             throws FileNotFoundException, VeicoloDuplicatoException, FileParsingException, IOException
     {
         this();
         inizializzaDaFile(filepath);
+        
+        // inizializzo il filepath alla fine per evitare che il metodo inizializzaDaFile inneschi dei salvataggi
+        this.filePath = filepath;
+        this.autoSalvataggio = autosalvataggio;
     }
 
     /**
@@ -91,9 +101,10 @@ public class Concessionario
      * quindi un modo comodo di gestire un caso di errore comune.
      * @param v il veicolo da aggiungere
      * @throws volpintesta.concessionaire.VeicoloDuplicatoException se il veicolo ha una targa
+     * @throws IOException se è attivato l'autosalvataggio ma il file non può essere creato, sovrascritto oppure se si verificano errori di I/O in scrittura.
      * uguale ad un altro veicolo già presente in concessionario.
      */
-    public void aggiungiVeicolo(Veicolo v) throws VeicoloDuplicatoException
+    public void aggiungiVeicolo(Veicolo v) throws VeicoloDuplicatoException, IOException
     {
         // Una classe non può basare la consistenza dei suoi dati interni sulla fiducia
         // che chi chiama i suoi metodi passi parametri validi. Dunque, se nel concessionario
@@ -112,6 +123,8 @@ public class Concessionario
             if (cercaVeicolo(v.getTarga()) == null) 
             {
                 veicoli.add(v);
+                if (autoSalvataggio && filePath != null)
+                    salvaDati(filePath);
             }
             else
             {
@@ -154,8 +167,9 @@ public class Concessionario
      * trovato alcun veicolo con la targa specificata, restituisce false.
      * @param targa la targa del veicolo da vendere
      * @return true se la vendita viene effettuata, false se il veicolo non viene trovato
+     * @throws IOException se la vendita riesce, è attivato l'autosalvataggio ma il file non può essere creato, sovrascritto oppure se si verificano errori di I/O in scrittura.
      */
-    public boolean vendiVeicolo (String targa)
+    public boolean vendiVeicolo (String targa) throws IOException
     {
         // Cerco il veicolo da vendere. A differenza dell'aggiunta del veicolo,
         // dove il veicolo cercato non serviva a niente se non a verificare
@@ -174,6 +188,9 @@ public class Concessionario
             
             // aggiungo il prezzo del veicolo venduto al saldo del concessionario
             saldo += veicoloDaVendere.getPrezzo();
+            
+            if (autoSalvataggio && filePath != null)
+                salvaDati(filePath);
             
             // restituisco un risultato positivo che indica l'avvenuta vendita
             return true;

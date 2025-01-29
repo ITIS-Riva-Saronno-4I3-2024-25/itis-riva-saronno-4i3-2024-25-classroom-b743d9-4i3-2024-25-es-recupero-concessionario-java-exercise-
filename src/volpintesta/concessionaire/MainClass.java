@@ -16,23 +16,7 @@ import java.util.Scanner;
 public class MainClass
 {
     private static Scanner input = new Scanner(System.in);
-    
-    private static void riempiConDatiDiTest(Concessionario concessionario) throws VeicoloDuplicatoException
-    {
-        // Questi metodi aggiungiVeicolo lanciano un'eccezione VeicoloDuplicatoException
-        // se già esiste un veicolo con la stessa targa, ma in questo punto del codice non 
-        // c'è alcun modo di risolvere l'errore in esecuzione, se non riscrivere il codice,
-        // quindi l'eccezione non viene catturata, ma viene aggiunta la clausola throws in modo
-        // che ne se occupi chi ha richiamato il metodo.        
-        concessionario.aggiungiVeicolo(new Auto("AA 111 AA", "BMW", "X1", 2020, 40000, 4, 540));
-        concessionario.aggiungiVeicolo(new Auto("BB 222 BB", "BMW", "X1", 2022, 50000, 5, 540));
-        concessionario.aggiungiVeicolo(new Auto("CC 333 CC", "BMW", "X3", 2023, 70000, 4, 570));
-        concessionario.aggiungiVeicolo(new Auto("DD 444 DD", "Ferrari", "F40", 1987, 3000000, 2, 35));
-        concessionario.aggiungiVeicolo(new Auto("EE 555 EE", "Lamborghini Urus", 2021, 245000, 5, 616));
-        concessionario.aggiungiVeicolo(new Moto("FF 666 FF", "Ducati", "Panigale V4", 2024, 34000));
-        concessionario.aggiungiVeicolo(new Moto("GG 777 GG", "Kawasaki Ninja 650", 2022, 8000));
-    }
-    
+     
     public static void main(String[] args)
     {
         String filePath = "savedata.txt";
@@ -40,7 +24,7 @@ public class MainClass
         Concessionario c = null;
         try
         {
-            c = new Concessionario(filePath); // crea un concessionario riempiendone i dati da file      
+            c = new Concessionario(filePath, true); // crea un concessionario riempiendone i dati da file      
         }
         catch (FileNotFoundException e)
         {
@@ -122,16 +106,6 @@ public class MainClass
                                 // quindi l'aggiunta del veicolo è riuscita.
                                 // Dunque, mostro in output un messaggio di successo.
                                 System.out.println("Veicolo aggiunto con successo!");
-                                
-                                try
-                                {
-                                    c.salvaDati(filePath);
-                                }
-                                catch (IOException e)
-                                {
-                                    System.out.println("Il salvataggio delle modifiche sul file \""+filePath+"\" è fallito.");
-                                }
-
                             }
                             catch(VeicoloDuplicatoException e) // eccezione lanciata dal metodo aggiungiVeicolo
                             {
@@ -184,6 +158,10 @@ public class MainClass
                                 // vuol dire che c'è un caso di errore che chi ha scritto il codice ha deciso che restasse non gestito
                                 // (mettendo quindi una clausola throws nell'intestazione del main).
                             }
+                            catch (IOException e)
+                            {
+                                System.out.println("Veicolo aggiunto con successo, ma il salvataggio delle modifiche sul file \""+filePath+"\" è fallito.");
+                            }
                         }
                         else
                         {
@@ -197,21 +175,21 @@ public class MainClass
                         System.out.println("Vendita di un veicolo");
                         System.out.print(" >>> Targa: ");
                         targa = input.nextLine();
-                        successo = c.vendiVeicolo(targa);
-                        if (successo)
+                        try
+                        {
+                            successo = c.vendiVeicolo(targa);
+                            if (successo)
+                            {
+                                System.out.println("Veicolo venduto con successo! Saldo corrente: " + c.getSaldo() + " €");
+                            }
+                            else
+                                System.out.println("Non è stato trovato nessun veicolo con la targa richiesta.");
+                        }
+                        catch (IOException e)
                         {
                             System.out.println("Veicolo venduto con successo! Saldo corrente: " + c.getSaldo() + " €");
-                            try
-                            {
-                                c.salvaDati(filePath);
-                            }
-                            catch (IOException e)
-                            {
-                                System.out.println("Il salvataggio delle modifiche sul file \""+filePath+"\" è fallito.");
-                            }
+                            System.out.println("Veicolo aggiunto con successo, ma il salvataggio delle modifiche sul file \""+filePath+"\" è fallito.");
                         }
-                        else
-                            System.out.println("Non è stato trovato nessun veicolo con la targa richiesta.");
                         break;
 
                     case "4":
